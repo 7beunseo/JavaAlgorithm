@@ -22,3 +22,9 @@ answer.append((char) num);
 ```java
 s.substring(0, 7).replace('#', '1').replace('*', '0');
 ```
+
+* 문자열을 문자 배열로 변환
+```java
+String str = "Hello";
+char[] arr = str.toCharArray();
+```
