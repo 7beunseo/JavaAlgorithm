@@ -6,27 +6,35 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Num12 {
-    public int solution(int n, int m, int[][] arr) {
+    public int solution(int n, int m, int[][] arr) throws IOException {
         int i, j, k;
         int count = 0;
-        // 4명 중 한명 -> 1부터 시작하므로 i와 k가 1부터 시작해야 함
-        for(i = 1; i <= n; i++) {
-            // 4명 중 한명
-            for(k = 1; k <= n; k++) {
-                // 각각 3번 비교 (자기 표함)
-                for(j = 0; j < m; j++) {
+        // Loop through each student as potential mentor (i) and mentee (k)
+        for (i = 1; i <= n; i++) {
+            for (k = 1; k <= n; k++) {
+                if (i == k) continue; // Skip if mentor and mentee are the same
+                boolean isMentor = true;
+                // Check all tests
+                for (j = 0; j < m; j++) {
                     int pi = 0, pk = 0;
-                    for(int s = 0; s < n; s++) {
-                        if(arr[j][s] == i) pi = s;
-                        if(arr[j][s] == k) pk = s;
+                    // Find the positions of i and k in each test
+                    for (int s = 0; s < n; s++) {
+                        if (arr[j][s] == i) pi = s;
+                        if (arr[j][s] == k) pk = s;
                     }
-                    if(pi >= pk) break;
+                    // If k appears before i in any test, i cannot be a mentor to k
+                    if (pi >= pk) {
+                        isMentor = false;
+                        break;
+                    }
                 }
-                if(j == m) {
+                // If i is a mentor for k in all tests, increase count
+                if (isMentor) {
                     count++;
+                }
             }
         }
-        return count ;
+        return count;
     }
 
     public static void main(String[] args) throws IOException {
@@ -39,9 +47,9 @@ public class Num12 {
 
         int[][] arr = new int[m][n];
 
-        for(int i = 0; i < m; i++) {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int k = 0; k < n; k++) {
+            for (int k = 0; k < n; k++) {
                 arr[i][k] = Integer.parseInt(st.nextToken());
             }
         }
